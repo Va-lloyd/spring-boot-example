@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class CustomerDas implements CustomerDao{
+@Repository("list")
+public class CustomerListDas implements CustomerDao{
 	private static List<Customer> customers;
 
 	static {
