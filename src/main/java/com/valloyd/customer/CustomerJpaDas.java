@@ -33,4 +33,14 @@ public class CustomerJpaDas implements CustomerDao{
 	public boolean existsCustomerWithEmail(String email) {
 		return customerRepository.existsCustomerByEmail(email);
 	}
+
+	@Override
+	public boolean existsCustomerWithId(Integer id) {
+		return customerRepository.existsCustomerById(id);
+	}
+
+	@Override
+	public void deleteCustomerById(Integer id) {
+		customerRepository.deleteById(id);
+	}
 }
