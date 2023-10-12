@@ -1,6 +1,7 @@
 package com.valloyd.customer;
 
-import com.valloyd.exception.ResourceNotFound;
+import com.valloyd.exception.DuplicateResourceException;
+import com.valloyd.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,24 @@ public class CustomerService {
 
 	public Customer getCustomer(Integer id){
 		return customerDao.selectCustomerById(id)
-				.orElseThrow(() -> new ResourceNotFound(
+				.orElseThrow(() -> new ResourceNotFoundException(
 						"Customer with id %s not found.".formatted(id)
 				));
+	}
+
+	public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest){
+		String email = customerRegistrationRequest.email();
+
+		if (customerDao.existsCustomerWithEmail(email)){
+			throw new DuplicateResourceException("Email taken");
+		}
+
+		Customer customer = new Customer(
+				customerRegistrationRequest.name(),
+				customerRegistrationRequest.email(),
+				customerRegistrationRequest.age()
+		);
+
+		customerDao.insertCustomer(customer);
 	}
 }

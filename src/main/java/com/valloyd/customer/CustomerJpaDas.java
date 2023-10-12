@@ -23,4 +23,14 @@ public class CustomerJpaDas implements CustomerDao{
 	public Optional<Customer> selectCustomerById(Integer id) {
 		return customerRepository.findById(id);
 	}
+
+	@Override
+	public void insertCustomer(Customer customer) {
+		customerRepository.save(customer);
+	}
+
+	@Override
+	public boolean existsCustomerWithEmail(String email) {
+		return customerRepository.existsCustomerByEmail(email);
+	}
 }
