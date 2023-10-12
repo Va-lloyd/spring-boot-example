@@ -43,4 +43,9 @@ public class CustomerJpaDas implements CustomerDao{
 	public void deleteCustomerById(Integer id) {
 		customerRepository.deleteById(id);
 	}
+
+	@Override
+	public void updateCustomer(Customer update) {
+		customerRepository.save(update);
+	}
 }

@@ -1,6 +1,7 @@
 package com.valloyd.customer;
 
 import com.valloyd.exception.DuplicateResourceException;
+import com.valloyd.exception.RequestValidationException;
 import com.valloyd.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,34 @@ public class CustomerService {
 		}
 
 		customerDao.deleteCustomerById(customerId);
+	}
+
+	public void updateCustomer(Integer customerId, CustomerUpdateRequest updateRequest){
+		Customer customer = getCustomer(customerId);
+		boolean changes = false;
+
+		if (updateRequest.name() != null && !updateRequest.name().equals(customer.getName())){
+			customer.setName(updateRequest.name());
+			changes = true;
+		}
+
+		if (updateRequest.email() != null && !updateRequest.email().equals(customer.getEmail())){
+			if (customerDao.existsCustomerWithEmail(updateRequest.email())){
+				throw new DuplicateResourceException("Email taken");
+			}
+			customer.setEmail(updateRequest.email());
+			changes = true;
+		}
+
+		if (updateRequest.age() != null && !updateRequest.age().equals(customer.getAge())){
+			customer.setAge(updateRequest.age());
+			changes = true;
+		}
+
+		if (changes){
+			customerDao.updateCustomer(customer);
+		}else {
+			throw new RequestValidationException("No data changes found.");
+		}
 	}
 }

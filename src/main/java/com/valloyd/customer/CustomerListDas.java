@@ -65,4 +65,9 @@ public class CustomerListDas implements CustomerDao{
 				.findFirst()
 				.ifPresent(customers::remove);
 	}
+
+	@Override
+	public void updateCustomer(Customer update) {
+		customers.add(update);
+	}
 }
