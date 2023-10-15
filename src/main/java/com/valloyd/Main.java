@@ -1,5 +1,6 @@
 package com.valloyd;
 
+import com.github.javafaker.Faker;
 import com.valloyd.customer.Customer;
 import com.valloyd.customer.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -7,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 public class Main {
@@ -18,20 +19,15 @@ public class Main {
 	@Bean
 	CommandLineRunner runner(CustomerRepository customerRepository) {
 		return args -> {
-			Customer alex = new Customer(
-					"Alex",
-					"alex@gmail.com",
-					28
-			);
+			var faker = new Faker();
 
-			Customer jamila = new Customer(
-					"Jamila",
-					"jamila@gmail.com",
-					28
-			);
+			var name = faker.name().firstName() + " " + faker.name().lastName();
+			var email = name.toLowerCase().replace(' ','.') + "." + UUID.randomUUID() + faker.internet().safeEmailAddress();
+			var age = faker.random().nextInt(18,120);
 
-			List<Customer> customers = List.of(alex, jamila);
-			//customerRepository.saveAll(customers);
+			Customer customer = new Customer(name, email, age);
+
+			customerRepository.save(customer);
 		};
 	}
 }
