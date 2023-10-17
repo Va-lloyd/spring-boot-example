@@ -8,8 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.UUID;
-
 @SpringBootApplication
 public class Main {
 	public static void main(String[] args) {
@@ -22,7 +20,7 @@ public class Main {
 			var faker = new Faker();
 
 			var name = faker.name().firstName() + " " + faker.name().lastName();
-			var email = name.toLowerCase().replace(' ','.') + "." + UUID.randomUUID() + faker.internet().safeEmailAddress();
+			var email = name.toLowerCase().replace(' ','.') + "@gmail.com";
 			var age = faker.random().nextInt(18,120);
 
 			Customer customer = new Customer(name, email, age);
